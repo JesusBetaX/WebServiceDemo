@@ -1,7 +1,5 @@
 package com.webservicedemo.dao;
 
-import java.util.concurrent.Executor;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -10,12 +8,11 @@ import restlight.Response;
 import restlight.Restlight;
 import restlight.widget.ImageLoader;
 import restlight.widget.LruImageCache;
-import android.os.Handler;
-import android.os.Looper;
+import restlight.platform.AndroidExecutor;
 
 public class WebService {
 // TODO: Variables
-	
+  
   private static WebService instance;
   /**
    * API para WebService.
@@ -33,20 +30,13 @@ public class WebService {
    * Gson Serialized.
    */
   private final Gson gson = new GsonBuilder()
-  		.setDateFormat("M/d/yy hh:mm a")
-		.create();
+      .setDateFormat("M/d/yy hh:mm a")
+    .create();
   
 //TODO: Contructor
   
   private WebService() {
-    restlight = new Restlight(new Executor() {
-      final Handler handler = new Handler(Looper.getMainLooper());
-      
-      @Override 
-      public void execute(Runnable r) {
-        handler.post(r);
-      }
-    });
+    restlight = new Restlight(new AndroidExecutor());
     
     LruImageCache imageCache = new LruImageCache();
     imageLoader = new ImageLoader(restlight.getQueue(), imageCache);
@@ -56,12 +46,12 @@ public class WebService {
   
   public <T> Request<T> request(final Class<T> classOf) {
     return new Request<T>() {
-	  @Override
-	  public T parseResponse(Response.Network<T> response) throws Exception {
-	    String json = new String(response.readByteArray(), getCharset());
-	    return gson.fromJson(json, classOf);
-	  }
-	};
+    @Override
+    public T parseResponse(Response.Network<T> response) throws Exception {
+      String json = new String(response.readByteArray(), getCharset());
+      return gson.fromJson(json, classOf);
+    }
+  };
   }
   
   public WebService setHost(String host) {
@@ -77,7 +67,7 @@ public class WebService {
   }
   
   public Gson getGson() {
-	return gson;
+  return gson;
   }
 
   public ImageLoader getImageLoader() {
