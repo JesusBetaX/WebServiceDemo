@@ -1,5 +1,7 @@
 <?php
 
+namespace vendor;
+
 /**
  * Application config.
  */

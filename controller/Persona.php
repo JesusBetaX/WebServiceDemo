@@ -1,5 +1,10 @@
 <?php
 
+namespace controller;
+
+use vendor\Request;
+use vendor\DB;
+
 class Persona {
 
   /**
@@ -54,7 +59,7 @@ class Persona {
   public function update(Request $request) {
     $sql = '
       	update persona set
-      	  nombre = ?,
+      	nombre = ?,
      	  apellidos = ?
       	where id = ?
     ';

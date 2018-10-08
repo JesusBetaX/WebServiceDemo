@@ -109,12 +109,12 @@ public class PersonaDao {
   public Call<ServerResponse> delete(long id) {
 	String url = new HttpUrl()
 			.setUrl(service.getHost() + "WebServiceDemo/persona/delete")
-	        .addQueryParameter("id", id)
+	    .addQueryParameter("id", id)
 			.toString();
 
     Request<ServerResponse> request = service.request(ServerResponse.class)
-    		.setMethod("DELETE")
-    		.setUrl(url);
+    	.setMethod("DELETE")
+    	.setUrl(url);
     
     return newCall(request);
   }

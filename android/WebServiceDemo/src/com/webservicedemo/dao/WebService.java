@@ -1,8 +1,5 @@
 package com.webservicedemo.dao;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import restlight.Request;
 import restlight.Response;
 import restlight.Restlight;
@@ -10,9 +7,12 @@ import restlight.widget.ImageLoader;
 import restlight.widget.LruImageCache;
 import restlight.platform.AndroidExecutor;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class WebService {
 // TODO: Variables
-  
+	
   private static WebService instance;
   /**
    * API para WebService.
@@ -27,17 +27,16 @@ public class WebService {
    */
   private String host = "http://10.0.0.2/";
   /**
-   * Gson Serialized.
+   * Json Serialized.
    */
   private final Gson gson = new GsonBuilder()
-      .setDateFormat("M/d/yy hh:mm a")
-    .create();
+  		.setDateFormat("M/d/yy hh:mm a")
+		  .create();
   
 //TODO: Contructor
   
   private WebService() {
     restlight = new Restlight(new AndroidExecutor());
-    
     LruImageCache imageCache = new LruImageCache();
     imageLoader = new ImageLoader(restlight.getQueue(), imageCache);
   }
@@ -46,12 +45,12 @@ public class WebService {
   
   public <T> Request<T> request(final Class<T> classOf) {
     return new Request<T>() {
-    @Override
-    public T parseResponse(Response.Network<T> response) throws Exception {
-      String json = new String(response.readByteArray(), getCharset());
-      return gson.fromJson(json, classOf);
-    }
-  };
+	    @Override
+	    public T parseResponse(Response.Network<T> response) throws Exception {
+	      String json = new String(response.readByteArray(), getCharset());
+	      return gson.fromJson(json, classOf);
+	    }
+	  };
   }
   
   public WebService setHost(String host) {
@@ -67,7 +66,7 @@ public class WebService {
   }
   
   public Gson getGson() {
-  return gson;
+	return gson;
   }
 
   public ImageLoader getImageLoader() {

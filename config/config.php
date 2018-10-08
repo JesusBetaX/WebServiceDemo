@@ -22,14 +22,5 @@ return [
         // Acción por default para todos los controladores.
         // Esta función debera estar definida en todos los controladores.
         'action' => 'index'
-    ],
-    /**
-     * Clases que usaremos en nuestra aplicación.
-     */
-    'classes' => [
-        // Librerias auxiliares de la aplicación.
-        'DB' => 'libs/DB.php',
-        'Request' => 'libs/Request.php',
-        'File' => 'libs/File.php'
     ]
 ];

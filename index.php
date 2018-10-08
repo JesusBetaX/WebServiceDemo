@@ -3,16 +3,8 @@
 // -------------------------------------------------------------------
 //  CONFIGURACION PARA LA APLICACION
 // -------------------------------------------------------------------
-require_once 'libs/Config.php';
-
-/**
- * Configuración inicial.
- */
 error_reporting(E_ALL | E_STRICT);
 mb_internal_encoding('UTF-8');
-set_error_handler('handleError');
-set_exception_handler('handleException');
-spl_autoload_register('loadClass');
 
 /**
  * Manipulador de errores.
@@ -22,9 +14,9 @@ spl_autoload_register('loadClass');
  * @param int $line
  */
 function handleError($severity, $message, $filepath, $line) {
-  require 'view/error/error.php';
-  exit(1);
+  require 'view/error/error.php'; exit(1);
 }
+set_error_handler('handleError');
 
 /**
  * Manipulador de excepciónes.
@@ -33,19 +25,22 @@ function handleError($severity, $message, $filepath, $line) {
 function handleException(Exception $error) {
   require 'view/error/exception.php';
 }
+set_exception_handler('handleException');
 
 /**
  * Cargador de clases. Este metodo se encarga de importar las clases 
- * que definimos en el archivo config.php 'classes'
- * @param String $name nombre de la clase.
+ *
+ * @param String $name nombre de la clase 'package\class.php'.
  */
 function loadClass($name) {
-  $classes = Config::getConfig('classes');
-  if (!array_key_exists($name, $classes)) {
-    throw new Exception("Class \"$name\" not found.", 404);
+  $name = str_replace(array('\\','/'), DIRECTORY_SEPARATOR, $name);
+  if (!file_exists("$name.php")) {
+    throw new Exception("Class \"$name.php\" not found.", 404);
   }
-  require_once $classes[$name];
+  require_once "$name.php";
 }
+spl_autoload_register('loadClass');
+
 
 // -------------------------------------------------------------------
 //  RECUPERACION DEL CONTROLADOR Y LA ACCION DE LA URL 
@@ -57,7 +52,7 @@ if (array_key_exists('url', $_GET)) {
   $_URL = explode('/', filter_var($_URL, FILTER_SANITIZE_URL));
 }
 
-$webConfig = Config::getConfig('web');
+$webConfig = vendor\Config::getConfig('web');
 
 /**
  * -------------------------------------------------------------------
@@ -69,7 +64,7 @@ $webConfig = Config::getConfig('web');
  * del "$webConfig". 
  */
 $class = ucfirst(
-        array_key_exists(0, $_URL) ? $_URL[0] : $webConfig['controller']
+  array_key_exists(0, $_URL) ? $_URL[0] : $webConfig['controller']
 );
 
 /**
@@ -82,22 +77,16 @@ $class = ucfirst(
  * "$webConfig". 
  */
 $method = strtolower(
-        array_key_exists(1, $_URL) ? $_URL[1] : $webConfig['action']
+  array_key_exists(1, $_URL) ? $_URL[1] : $webConfig['action']
 );
 
 // -------------------------------------------------------------------
 //  EJECUTAMOS LA APLICACION
 // -------------------------------------------------------------------
-// Validamos si existe el controlador en la carpeta "controller".
-if (!file_exists("controller/$class.php")) {
-  throw new Exception("El controlador \"$class\" no existe en la carpeta \"controller\".", 404);
-  //throw new Exception("Page Not Found.", 404);
-}
 
 // Instanciamos el controlador.
-require_once "controller/$class.php";
-$controller = new $class();
-
+$class_path = "controller\\$class"; 
+$controller = new $class_path();
 
 // Validamos si existe el metodo en el controlador.
 if (!method_exists($controller, $method)) {
@@ -107,7 +96,7 @@ if (!method_exists($controller, $method)) {
 
 // Llama la accion del controlador. Y le pasamos la request.
 $return = call_user_func(
-        array($controller, $method), new Request()
+  array($controller, $method), new vendor\Request()
 );
 
 if (!is_null($return)) {

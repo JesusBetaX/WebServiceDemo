@@ -1,5 +1,9 @@
 <?php
 
+namespace controller;
+
+use vendor\Request;
+
 class Home {
   /**
    * Muestra la Bienvenida.

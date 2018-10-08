@@ -1,5 +1,7 @@
 <?php
 
+namespace vendor;
+
 final class File {
 
   private $file;

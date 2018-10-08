@@ -1,4 +1,10 @@
 <?php
+
+namespace vendor;
+
+use \Config;
+use \PDO;
+
 /**
  * A class file to connect to database
  */

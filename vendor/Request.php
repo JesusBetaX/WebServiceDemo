@@ -1,5 +1,7 @@
 <?php
 
+namespace vendor;
+
 final class Request {
 
   public function __destruct() {
