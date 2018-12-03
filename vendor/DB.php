@@ -2,7 +2,7 @@
 
 namespace vendor;
 
-use \Config;
+use vendor\Config;
 use \PDO;
 
 /**

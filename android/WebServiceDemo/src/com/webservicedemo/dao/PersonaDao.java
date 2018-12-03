@@ -39,10 +39,9 @@ public class PersonaDao {
    * @return Call
    */
   public Call<Persona> findById(int id) {
-	String url = new HttpUrl()
+	HttpUrl url = new HttpUrl()
 		.setUrl(service.getHost() + "WebServiceDemo/persona/find")
-        .addQueryParameter("id", id)
-		.toString();
+        .addQueryParameter("id", id);
 	  
     Request<Persona> request = service.request(Persona.class)
     	.setMethod("GET")
@@ -107,10 +106,9 @@ public class PersonaDao {
    * @return Call
    */
   public Call<ServerResponse> delete(long id) {
-	String url = new HttpUrl()
-			.setUrl(service.getHost() + "WebServiceDemo/persona/delete")
-	    .addQueryParameter("id", id)
-			.toString();
+	HttpUrl url = new HttpUrl()
+		.setUrl(service.getHost() + "WebServiceDemo/persona/delete")
+	    .addQueryParameter("id", id);
 
     Request<ServerResponse> request = service.request(ServerResponse.class)
     	.setMethod("DELETE")
@@ -120,7 +118,7 @@ public class PersonaDao {
   }
 
   public String getUrlFoto() {
-    String url = service.getHost() + "WebServiceDemo/images.jpeg";
+    String url = service.getHost() + "WebServiceDemo/images.jpg";
     return url;
   }
 

@@ -81,8 +81,7 @@ public class PersonaList extends Activity implements
   @Override
   public void onClick(View v) {
     Intent i = new Intent(getApplicationContext(), PersonaActivity.class);
-    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     startActivityForResult(i, REQUEST_UPDATE);
   }
 
@@ -92,8 +91,7 @@ public class PersonaList extends Activity implements
   @Override
   public void onItemClick(AdapterView<?> l, View view, int position, long id) {
     Intent i = new Intent(getApplicationContext(), PersonaDetalles.class);
-    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
     final Persona o = (Persona) l.getItemAtPosition(position);
     i.putExtra("id", o.id);

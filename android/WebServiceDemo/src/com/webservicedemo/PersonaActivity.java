@@ -39,7 +39,6 @@ public class PersonaActivity extends Activity {
       @Override
       public void onClick(View v) {
         guardar();
-
       }
     });
 

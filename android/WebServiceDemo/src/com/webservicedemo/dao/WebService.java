@@ -1,11 +1,12 @@
 package com.webservicedemo.dao;
 
+import java.io.Reader;
+
 import restlight.Request;
 import restlight.Response;
 import restlight.Restlight;
 import restlight.widget.ImageLoader;
 import restlight.widget.LruImageCache;
-import restlight.platform.AndroidExecutor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,7 +37,7 @@ public class WebService {
 //TODO: Contructor
   
   private WebService() {
-    restlight = new Restlight(new AndroidExecutor());
+    restlight = Restlight.getInstance();
     LruImageCache imageCache = new LruImageCache();
     imageLoader = new ImageLoader(restlight.getQueue(), imageCache);
   }
@@ -46,8 +47,8 @@ public class WebService {
   public <T> Request<T> request(final Class<T> classOf) {
     return new Request<T>() {
 	    @Override
-	    public T parseResponse(Response.Network<T> response) throws Exception {
-	      String json = new String(response.readByteArray(), getCharset());
+	    public T parseResponse(Response<T> response) throws Exception {
+	      Reader json = response.charStream(getCharset());
 	      return gson.fromJson(json, classOf);
 	    }
 	  };
