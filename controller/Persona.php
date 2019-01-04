@@ -18,7 +18,7 @@ class Persona {
         order by nombre asc'
     ;
     // Busca registros con el criterio de busqueda 'search'.
-    return DB::search($sql, array(
+    return DB::query($sql, array(
         '%' . trim($request->get('search')) . '%'
     ));
   }
@@ -28,7 +28,7 @@ class Persona {
    * @param  \libs\Request  $request
    */
   public function find(Request $request) {
-    $persona = DB::find('select * from persona where id = ?', array(
+    $persona = DB::get('select * from persona where id = ?', array(
       	$request->get('id')
     ));
     // Muestra el json.

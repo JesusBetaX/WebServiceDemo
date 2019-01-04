@@ -28,7 +28,7 @@ final class DB {
    * @param array $params [opcional] parametros a inyectar.
    * @return array <b>PDOStatement::fetchAll</b>
    */
-  public static function search($sql, array $params = null) {
+  public static function query($sql, array $params = null) {
     $statement = self::getDb()->prepare($sql);
     if ($statement->execute($params)) {
       return $statement->fetchAll(PDO::FETCH_OBJ);
@@ -43,7 +43,7 @@ final class DB {
    * @param string $class_name [opciónal] El nombre de la clase a crear.
    * @return Una instancia de la clase requerida.
    */
-  public static function find($sql, array $params, $class_name = null) {
+  public static function get($sql, array $params, $class_name = null) {
     $statement = self::getDb()->prepare($sql);
     if ($statement->execute($params)) {
       return $statement->fetchObject($class_name);
