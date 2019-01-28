@@ -122,7 +122,7 @@ public class PersonaDetalles extends Activity {
     PersonaDao dao = PersonaDao.getInstance();
     Call<ServerResponse> call = dao.delete(id);
 
-    call.queue(new Callback<ServerResponse>() {
+    call.execute(new Callback<ServerResponse>() {
       @Override
       public void onResponse(Response<ServerResponse> response) throws Exception {
         if (response.result().success) {
@@ -135,7 +135,7 @@ public class PersonaDetalles extends Activity {
       }
 
       @Override
-      public void onErrorResponse(Exception e) {
+      public void onFailure(Exception e) {
         Dialog.showErrorWeb(PersonaDetalles.this, e);
       }
     });

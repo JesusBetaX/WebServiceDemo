@@ -64,7 +64,7 @@ public class PersonaActivity extends Activity {
     PersonaDao dao = PersonaDao.getInstance();
     Call<ServerResponse> call = dao.save(obj);
 
-    call.queue(new Callback<ServerResponse>() {
+    call.execute(new Callback<ServerResponse>() {
       @Override
       public void onResponse(Response<ServerResponse> response) throws Exception {
         if (response.result().success) {
@@ -79,7 +79,7 @@ public class PersonaActivity extends Activity {
         }
       }
       @Override
-      public void onErrorResponse(Exception e) {
+      public void onFailure(Exception e) {
         Dialog.showErrorWeb(PersonaActivity.this, e);
       }
     });

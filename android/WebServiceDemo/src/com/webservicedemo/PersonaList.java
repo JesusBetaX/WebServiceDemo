@@ -63,13 +63,13 @@ public class PersonaList extends Activity implements
     PersonaDao dao = PersonaDao.getInstance();
     Call<Persona[]> call = dao.getAll();
 
-    call.queue(new Callback<Persona[]>() {
+    call.execute(new Callback<Persona[]>() {
       @Override
       public void onResponse(Response<Persona[]> response) throws Exception {
         mAdapter.setAll(response.result());
       }
       @Override
-      public void onErrorResponse(Exception e) {
+      public void onFailure(Exception e) {
         Dialog.showErrorWeb(PersonaList.this, e);
       }
     });
