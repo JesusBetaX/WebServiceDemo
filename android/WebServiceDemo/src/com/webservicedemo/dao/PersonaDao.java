@@ -9,8 +9,8 @@ import com.webservicedemo.model.ServerResponse;
 import com.webservicedemo.model.Persona;
 
 public class PersonaDao {
-
   public static final String TAG = "PersonaDao";
+  
   private static PersonaDao instance;
   private final WebService service;
 

@@ -2,7 +2,6 @@ package com.webservicedemo;
 
 import restlight.Call;
 import restlight.Callback;
-import restlight.Response;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -66,8 +65,8 @@ public class PersonaActivity extends Activity {
 
     call.execute(new Callback<ServerResponse>() {
       @Override
-      public void onResponse(Response<ServerResponse> response) throws Exception {
-        if (response.result().success) {
+      public void onResponse(ServerResponse result) throws Exception {
+        if (result.success) {
           Toast.makeText(getApplicationContext(), "¡Ok Datos Guardados!",
                   Toast.LENGTH_SHORT).show();
           setResult(RESULT_OK);

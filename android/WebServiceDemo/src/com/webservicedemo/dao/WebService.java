@@ -3,7 +3,7 @@ package com.webservicedemo.dao;
 import java.io.Reader;
 
 import restlight.Request;
-import restlight.Response;
+import restlight.ResponseBody;
 import restlight.Restlight;
 import restlight.widget.ImageLoader;
 import restlight.widget.LruImageCache;
@@ -47,8 +47,9 @@ public class WebService {
   public <T> Request<T> request(final Class<T> classOf) {
     return new Request<T>() {
 	    @Override
-	    public T parseResponse(Response<T> response) throws Exception {
-	      Reader json = response.charStream(getCharset());
+	    public T parseResponse(ResponseBody response) throws Exception {
+	      //Reader json = response.charStream(getCharset());
+	      String json = response.string(getCharset());
 	      return gson.fromJson(json, classOf);
 	    }
 	  };

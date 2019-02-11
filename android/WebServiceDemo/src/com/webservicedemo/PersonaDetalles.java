@@ -2,7 +2,6 @@ package com.webservicedemo;
 
 import restlight.Call;
 import restlight.Callback;
-import restlight.Response;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -124,8 +123,8 @@ public class PersonaDetalles extends Activity {
 
     call.execute(new Callback<ServerResponse>() {
       @Override
-      public void onResponse(Response<ServerResponse> response) throws Exception {
-        if (response.result().success) {
+      public void onResponse(ServerResponse result) throws Exception {
+        if (result.success) {
           Toast.makeText(getApplicationContext(), "¡Ok Datos Borrados!", Toast.LENGTH_SHORT).show();
           setResult(RESULT_OK);
           finish();

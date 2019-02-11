@@ -2,7 +2,6 @@ package com.webservicedemo;
 
 import restlight.Call;
 import restlight.Callback;
-import restlight.Response;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -65,8 +64,8 @@ public class PersonaList extends Activity implements
 
     call.execute(new Callback<Persona[]>() {
       @Override
-      public void onResponse(Response<Persona[]> response) throws Exception {
-        mAdapter.setAll(response.result());
+      public void onResponse(Persona[] result) throws Exception {
+        mAdapter.setAll(result);
       }
       @Override
       public void onFailure(Exception e) {

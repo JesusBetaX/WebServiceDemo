@@ -48,7 +48,7 @@ class Persona {
       	$request->get('nombre'),
       	$request->get('apellidos')
     ));
-    // Muestra el json. 
+    // Muestra el json.
     return array('success' => $success);
   }
 
