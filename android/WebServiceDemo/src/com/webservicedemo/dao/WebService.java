@@ -44,8 +44,8 @@ public class WebService {
   
 //TODO: Funciones
   
-  public <T> Request<T> request(final Class<T> classOf) {
-    return new Request<T>() {
+  public <T> Request.Parse<T> request(final Class<T> classOf) {
+    return new Request.Parse<T>() {
 	    @Override
 	    public T parseResponse(ResponseBody response) throws Exception {
 	      //Reader json = response.charStream(getCharset());

@@ -25,9 +25,9 @@ public class PersonaDao {
    */
   public Call<Persona[]> getAll() {
     String url = service.getHost() + "WebServiceDemo/persona/index";
-    Request<Persona[]> request = service.request(Persona[].class)
-    	.setMethod("GET")
-    	.setUrl(url);
+    Request.Parse<Persona[]> request = service.request(Persona[].class);
+	request.setMethod("GET");
+	request.setUrl(url);
     
     return newCall(request);
   }
@@ -43,9 +43,9 @@ public class PersonaDao {
 		.setUrl(service.getHost() + "WebServiceDemo/persona/find")
         .addQueryParameter("id", id);
 	  
-    Request<Persona> request = service.request(Persona.class)
-    	.setMethod("GET")
-    	.setUrl(url);
+	Request.Parse<Persona> request = service.request(Persona.class);
+	request.setMethod("GET");
+	request.setUrl(url);
    
     return newCall(request);
   }
@@ -70,10 +70,10 @@ public class PersonaDao {
 	    .add("apellidos", obj.apellidos);
 	  
     String url = service.getHost() + "WebServiceDemo/persona/insert";
-    Request<ServerResponse> request = service.request(ServerResponse.class)
-        .setMethod("POST")
-    	.setUrl(url)
-    	.setBody(body);
+    Request.Parse<ServerResponse> request = service.request(ServerResponse.class);
+    request .setMethod("POST");
+    request.setUrl(url);
+    request.setBody(body);
 
     return newCall(request);
   }
@@ -91,10 +91,10 @@ public class PersonaDao {
 	    .add("apellidos", obj.apellidos);
 	  
     String url = service.getHost() + "WebServiceDemo/persona/update";
-    Request<ServerResponse> request = service.request(ServerResponse.class)
-    	.setMethod("POST")
-    	.setUrl(url)
-    	.setBody(body);
+    Request.Parse<ServerResponse> request = service.request(ServerResponse.class);
+    request.setMethod("POST");
+    request.setUrl(url);
+    request.setBody(body);
 
     return newCall(request);
   }
@@ -110,9 +110,9 @@ public class PersonaDao {
 		.setUrl(service.getHost() + "WebServiceDemo/persona/delete")
 	    .addQueryParameter("id", id);
 
-    Request<ServerResponse> request = service.request(ServerResponse.class)
-    	.setMethod("DELETE")
-    	.setUrl(url);
+    Request.Parse<ServerResponse> request = service.request(ServerResponse.class);
+    request.setMethod("DELETE");
+    request.setUrl(url);
     
     return newCall(request);
   }
@@ -128,7 +128,7 @@ public class PersonaDao {
    * @param request
    * @return
    */
-  private <T> Call<T> newCall(Request<T> request) {
+  private <T> Call<T> newCall(Request.Parse<T> request) {
     // [Opcional] Cancela todas la request que tengan esta TAG
     service.restlight().getQueue().cancelAll(TAG);
     request.setTag(TAG);
