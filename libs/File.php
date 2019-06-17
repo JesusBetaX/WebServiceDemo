@@ -1,6 +1,6 @@
 <?php
 
-namespace vendor;
+namespace libs;
 
 final class File {
 

@@ -47,12 +47,13 @@ spl_autoload_register('loadClass');
 // -------------------------------------------------------------------
 
 $_URL = array();
-if (array_key_exists('url', $_GET)) {
-  $_URL = rtrim($_GET['url'], '/');
+if (array_key_exists('url', $_REQUEST)) {
+  $_URL = rtrim($_REQUEST['url'], '/');
   $_URL = explode('/', filter_var($_URL, FILTER_SANITIZE_URL));
+  unset($_REQUEST['url']);
 }
 
-$webConfig = vendor\Config::getConfig('web');
+$webConfig = libs\Config::getConfig('web');
 
 /**
  * -------------------------------------------------------------------
@@ -96,7 +97,7 @@ if (!method_exists($controller, $method)) {
 
 // Llama la accion del controlador. Y le pasamos la request.
 $return = call_user_func(
-  array($controller, $method), new vendor\Request()
+  array($controller, $method), new libs\Request()
 );
 
 if (!is_null($return)) {

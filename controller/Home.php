@@ -2,7 +2,7 @@
 
 namespace controller;
 
-use vendor\Request;
+use libs\Request;
 
 class Home {
   /**

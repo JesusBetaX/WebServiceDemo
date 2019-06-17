@@ -20,6 +20,7 @@ import com.webservicedemo.model.Persona;
 
 public class PersonaAdapter extends BaseAdapter {
   public static final String TAG = "PersonaAdapter";
+  
 // TODO: Variables
   
   /**

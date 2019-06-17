@@ -13,17 +13,16 @@ import com.webservicedemo.dao.WebService;
 public class MainActivity extends Activity {
 
   EditText host;
-  Button ok;
+  Button btnOk;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
     host = (EditText) findViewById(R.id.host);
 
-    ok = (Button) findViewById(R.id.ok);
-    ok.setOnClickListener(new View.OnClickListener() {
+    btnOk = (Button) findViewById(R.id.ok);
+    btnOk.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         SharedPreferences sp = getPreferences(MODE_PRIVATE);
@@ -41,8 +40,7 @@ public class MainActivity extends Activity {
     });
   }
 
-  @Override
-  protected void onPostCreate(Bundle savedInstanceState) {
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
 
     WebService service = WebService.getInstance();

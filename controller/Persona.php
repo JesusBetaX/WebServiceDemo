@@ -2,8 +2,8 @@
 
 namespace controller;
 
-use vendor\Request;
-use vendor\DB;
+use libs\Request;
+use libs\DB;
 
 class Persona {
 
@@ -12,15 +12,19 @@ class Persona {
    * @param  \libs\Request  $request
    */
   public function index(Request $request) {
+    // Abrimos la base de datos
+    $db = DB::connect(/*db*/);
+
+    $search = '%' . trim($request->search) . '%';
     $sql = '
         select * from persona 
         where concat(nombre, apellidos) like ? 
         order by nombre asc'
     ;
+
     // Busca registros con el criterio de busqueda 'search'.
-    return DB::query($sql, array(
-        '%' . trim($request->get('search')) . '%'
-    ));
+    $cursor = $db->query( $sql, [$search] );
+    return $cursor->fetchAll();
   }
 
   /**
@@ -28,11 +32,14 @@ class Persona {
    * @param  \libs\Request  $request
    */
   public function find(Request $request) {
-    $persona = DB::get('select * from persona where id = ?', array(
-      	$request->get('id')
-    ));
+    // Abrimos la base de datos
+    $db = DB::connect(/*db2*/);
+
+    $cursor = $db->cursor('select * from persona where id = ?');
+    $cursor->execute([ $request->id ]);
+
     // Muestra el json.
-    return array('persona' => $persona);
+    return ['persona' => $cursor->fetchOne()];
   }
 
   /**
@@ -40,16 +47,28 @@ class Persona {
    * @param  \libs\Request  $request
    */
   public function insert(Request $request) {
-    $sql = '
-      	insert into persona(nombre, apellidos)
-      	values(?, ?)
-    ';
-    $success = DB::execute($sql, array(
-      	$request->get('nombre'),
-      	$request->get('apellidos')
-    ));
+    // Abrimos la base de datos
+    $db = DB::connect();
+/*
+    $cursor = $db->cursor('
+        insert into persona(nombre, apellidos)
+        values(?, ?)
+    ');
+
+    $success = $cursor->execute([
+      	$request->nombre,
+      	$request->apellidos
+    ]);
+*/
+    $id = $db->insert('persona', [
+    	'nombre'    => $request->nombre,
+      'apellidos' => $request->apellidos
+    ]);
+
+    $success = $id > 0;
+
     // Muestra el json.
-    return array('success' => $success);
+    return ['success' => $success];
   }
 
   /**
@@ -57,19 +76,31 @@ class Persona {
    * @param  \libs\Request  $request
    */
   public function update(Request $request) {
-    $sql = '
+    // Abrimos la base de datos
+    $db = DB::connect();
+/*
+    $cursor = $db->cursor('
       	update persona set
-      	nombre = ?,
-     	  apellidos = ?
+      	  nombre = ?,
+     	    apellidos = ?
       	where id = ?
-    ';
-    $success = DB::execute($sql, array(
-      	$request->get('nombre'),
-      	$request->get('apellidos'),
-      	$request->get('id')
-    ));
+    ');
+
+    $success = $cursor->execute([
+      	$request->nombre,
+      	$request->apellidos,
+      	$request->id
+    ]);
+*/
+    $rows = $db->update('persona', [
+    	'nombre'    => $request->nombre,
+      'apellidos' => $request->apellidos
+    ], 'id = ' . $request->id);
+    
+    $success = $rows > 0;
+
     // Muestra el json.
-    return array('success' => $success);
+    return ['success' => $success];
   }
 
   /**
@@ -77,11 +108,17 @@ class Persona {
    * @param  \libs\Request  $request
    */
   public function delete(Request $request) {
-    $success = DB::execute('delete from persona where id = ?', array(
-      	$request->get('id')
-    ));
+    // Abrimos la base de datos
+    $db = DB::connect();
+/*
+    $cursor = $db->cursor('delete from persona where id = ?');
+    $success = $cursor->execute([ $request->id ]);
+*/
+    $rows = $db->delete('persona', 'id = ' . $request->id);
+    $success = $rows > 0;
+    
     // Muestra el json.
-    return array('success' => $success);
+    return ['success' => $success];
   }
 
 }

@@ -25,8 +25,7 @@ public class PersonaList extends Activity implements
    *
    * @param savedInstanceState
    */
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_list);
 
@@ -43,8 +42,7 @@ public class PersonaList extends Activity implements
    *
    * @param savedInstanceState
    */
-  @Override
-  protected void onPostCreate(Bundle savedInstanceState) {
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
 
     mAdapter = new PersonaAdapter(this);
@@ -77,8 +75,7 @@ public class PersonaList extends Activity implements
   /**
    * Lanza un Intent para agregar una nueva nota.
    */
-  @Override
-  public void onClick(View v) {
+  @Override public void onClick(View v) {
     Intent i = new Intent(getApplicationContext(), PersonaActivity.class);
     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     startActivityForResult(i, REQUEST_UPDATE);
@@ -87,7 +84,7 @@ public class PersonaList extends Activity implements
   /**
    * Valida que item de ListView se a seleccionado.
    */
-  @Override
+  @Override 
   public void onItemClick(AdapterView<?> l, View view, int position, long id) {
     Intent i = new Intent(getApplicationContext(), PersonaDetalles.class);
     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

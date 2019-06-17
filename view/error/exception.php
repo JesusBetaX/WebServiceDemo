@@ -87,9 +87,13 @@
                 <?php echo $error->getMessage() ?>
             </p>
             
-                <code>
-                    <?php echo $error->getFile() ?> on line <b><?php echo $error->getLine() ?></b>
-                </code>
+            <code>
+                <?php echo $error->getFile() ?> on line <b><?php echo $error->getLine() ?></b>
+            </code>
+            
+            <p>
+              <?php //echo $error->getTraceAsString() ?>
+            </p>
             
         </div>
 

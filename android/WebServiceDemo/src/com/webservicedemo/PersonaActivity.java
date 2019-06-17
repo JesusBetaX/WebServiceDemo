@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.webservicedemo.dao.PersonaDao;
-import com.webservicedemo.model.ServerResponse;
+import com.webservicedemo.model.Response;
 import com.webservicedemo.model.Persona;
 
 public class PersonaActivity extends Activity {
@@ -18,31 +18,30 @@ public class PersonaActivity extends Activity {
   long id;
   TextView nombre;
   TextView apellidos;
-  Button save, cancel;
+  Button btnSave, btnCancel;
 
   /**
    * Crea las vistas.
    *
    * @param savedInstanceState
    */
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_form);
 
     nombre = (TextView) findViewById(R.id.nombre);
     apellidos = (TextView) findViewById(R.id.apellidos);
 
-    save = (Button) findViewById(R.id.save);
-    save.setOnClickListener(new View.OnClickListener() {
+    btnSave = (Button) findViewById(R.id.save);
+    btnSave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         guardar();
       }
     });
 
-    cancel = (Button) findViewById(R.id.cancel);
-    cancel.setOnClickListener(new View.OnClickListener() {
+    btnCancel = (Button) findViewById(R.id.cancel);
+    btnCancel.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         setResult(RESULT_CANCELED);
@@ -61,11 +60,11 @@ public class PersonaActivity extends Activity {
     obj.apellidos = apellidos.getText().toString();
 
     PersonaDao dao = PersonaDao.getInstance();
-    Call<ServerResponse> call = dao.save(obj);
+    Call<Response> call = dao.save(obj);
 
-    call.execute(new Callback<ServerResponse>() {
+    call.execute(new Callback<Response>() {
       @Override
-      public void onResponse(ServerResponse result) throws Exception {
+      public void onResponse(Response result) throws Exception {
         if (result.success) {
           Toast.makeText(getApplicationContext(), "¡Ok Datos Guardados!",
                   Toast.LENGTH_SHORT).show();
@@ -89,8 +88,7 @@ public class PersonaActivity extends Activity {
    *
    * @param savedInstanceState
    */
-  @Override
-  protected void onPostCreate(Bundle savedInstanceState) {
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
     Bundle extras = savedInstanceState;
     if (extras == null) {
@@ -103,8 +101,7 @@ public class PersonaActivity extends Activity {
    * Se restauran los datos que se guardaron en
    * {@link #onSaveInstanceState(Bundle)}
    */
-  @Override
-  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+  @Override protected void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
     id = savedInstanceState.getLong("id", 0);
     nombre.setText(savedInstanceState.getCharSequence("nombre"));
@@ -114,8 +111,7 @@ public class PersonaActivity extends Activity {
   /**
    * Cuando se gira la pantalla se guardan los datos de los componentes
    */
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
+  @Override protected void onSaveInstanceState(Bundle outState) {
     outState.putLong("id", id);
     outState.putCharSequence("nombre", nombre.getText());
     outState.putCharSequence("apellidos", apellidos.getText());

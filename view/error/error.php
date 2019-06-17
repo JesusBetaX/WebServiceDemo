@@ -77,9 +77,9 @@
                 <?php echo $message ?>
             </p>
             
-                <code>
-                    <?php echo $filepath ?> on line <b><?php echo $line ?></b>
-                </code>
+            <code>
+                <?php echo $filepath ?> on line <b><?php echo $line ?></b>
+            </code>
             
         </div>
 

@@ -5,13 +5,14 @@ import restlight.HttpUrl;
 import restlight.Request;
 import restlight.FormBody;
 
-import com.webservicedemo.model.ServerResponse;
 import com.webservicedemo.model.Persona;
+import com.webservicedemo.model.Response;
 
 public class PersonaDao {
   public static final String TAG = "PersonaDao";
   
   private static PersonaDao instance;
+  
   private final WebService service;
 
   public PersonaDao() {
@@ -24,12 +25,13 @@ public class PersonaDao {
    * @return Call
    */
   public Call<Persona[]> getAll() {
-    String url = service.getHost() + "WebServiceDemo/persona/index";
-    Request.Parse<Persona[]> request = service.request(Persona[].class);
+    String url = service.getUrl("WebServiceDemo/persona/index");
+    
+    Request request = new Request();
 	request.setMethod("GET");
 	request.setUrl(url);
     
-    return newCall(request);
+    return newCall(request, Persona[].class);
   }
 
   /**
@@ -39,23 +41,18 @@ public class PersonaDao {
    * @return Call
    */
   public Call<Persona> findById(int id) {
-	HttpUrl url = new HttpUrl()
-		.setUrl(service.getHost() + "WebServiceDemo/persona/find")
+    HttpUrl url = new HttpUrl( service.getUrl("WebServiceDemo/persona/find") )
         .addQueryParameter("id", id);
 	  
-	Request.Parse<Persona> request = service.request(Persona.class);
+	Request request = new Request();
 	request.setMethod("GET");
 	request.setUrl(url);
    
-    return newCall(request);
+    return newCall(request, Persona.class);
   }
 
-  public Call<ServerResponse> save(Persona obj) {
-    if (obj.id > 0) {
-      return update(obj);
-    } else {
-      return insert(obj);
-    }
+  public Call<Response> save(Persona obj) {
+    return (obj.id > 0) ? update(obj) : insert(obj);
   }
 
   /**
@@ -64,18 +61,20 @@ public class PersonaDao {
    * @param obj
    * @return Call
    */
-  public Call<ServerResponse> insert(Persona obj) {
-    FormBody body = new FormBody()
-	    .add("nombre", obj.nombre)
-	    .add("apellidos", obj.apellidos);
-	  
-    String url = service.getHost() + "WebServiceDemo/persona/insert";
-    Request.Parse<ServerResponse> request = service.request(ServerResponse.class);
-    request .setMethod("POST");
+  public Call<Response> insert(Persona obj) {
+    String url = service.getUrl("WebServiceDemo/persona/insert");
+    
+    Request request = new Request();
+    request.setMethod("POST");
     request.setUrl(url);
+    
+    FormBody body = new FormBody()
+    	 .add("nombre", obj.nombre)
+    	 .add("apellidos", obj.apellidos);
+    
     request.setBody(body);
 
-    return newCall(request);
+    return newCall(request, Response.class);
   }
 
   /**
@@ -84,19 +83,21 @@ public class PersonaDao {
    * @param obj
    * @return Call
    */
-  public Call<ServerResponse> update(Persona obj) {
-	FormBody body = new FormBody()
-	    .add("id", obj.id)
-	    .add("nombre", obj.nombre)
-	    .add("apellidos", obj.apellidos);
-	  
-    String url = service.getHost() + "WebServiceDemo/persona/update";
-    Request.Parse<ServerResponse> request = service.request(ServerResponse.class);
+  public Call<Response> update(Persona obj) {  
+    String url = service.getUrl("WebServiceDemo/persona/update");
+    
+    Request request = new Request();
     request.setMethod("POST");
     request.setUrl(url);
+    
+    FormBody body = new FormBody()
+    	 .add("id", obj.id)
+    	 .add("nombre", obj.nombre)
+    	 .add("apellidos", obj.apellidos);
+    
     request.setBody(body);
 
-    return newCall(request);
+    return newCall(request, Response.class);
   }
 
   /**
@@ -105,21 +106,19 @@ public class PersonaDao {
    * @param id
    * @return Call
    */
-  public Call<ServerResponse> delete(long id) {
-	HttpUrl url = new HttpUrl()
-		.setUrl(service.getHost() + "WebServiceDemo/persona/delete")
+  public Call<Response> delete(long id) {
+	HttpUrl url = new HttpUrl( service.getUrl("WebServiceDemo/persona/delete") )
 	    .addQueryParameter("id", id);
 
-    Request.Parse<ServerResponse> request = service.request(ServerResponse.class);
+    Request request = new Request();
     request.setMethod("DELETE");
     request.setUrl(url);
     
-    return newCall(request);
+    return newCall(request, Response.class);
   }
 
   public String getUrlFoto() {
-    String url = service.getHost() + "WebServiceDemo/images.jpg";
-    return url;
+    return service.getUrl("WebServiceDemo/images.jpg");
   }
 
   /**
@@ -128,13 +127,18 @@ public class PersonaDao {
    * @param request
    * @return
    */
-  private <T> Call<T> newCall(Request.Parse<T> request) {
+  private <T> Call<T> newCall(Request request, Class<T> classOf) {
     // [Opcional] Cancela todas la request que tengan esta TAG
     service.restlight().getQueue().cancelAll(TAG);
     request.setTag(TAG);
+    
+    // Crea un convertidor tipo GSON para la petición.
+    Request.Parse<T> parse = service.gsonRequest(classOf);
+    
     // Crea una invocacion.
-    return service.restlight().newCall(request);
+    return service.restlight().newCall(request, parse);
   }
+  
 
   public static PersonaDao getInstance() {
     if (instance == null) {

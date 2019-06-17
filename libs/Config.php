@@ -1,6 +1,6 @@
 <?php
 
-namespace vendor;
+namespace libs;
 
 /**
  * Application config.

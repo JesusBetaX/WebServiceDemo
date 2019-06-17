@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.webservicedemo.dao.PersonaDao;
 import com.webservicedemo.dao.WebService;
-import com.webservicedemo.model.ServerResponse;
+import com.webservicedemo.model.Response;
 
 public class PersonaDetalles extends Activity {
 
@@ -24,15 +24,14 @@ public class PersonaDetalles extends Activity {
   TextView nombre;
   TextView apellidos;
   restlight.widget.NetworkImageView image;
-  Button edit, delete;
+  Button btnEdit, btnDelete;
 
   /**
    * Crea las vistas.
    *
    * @param savedInstanceState
    */
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_detalles);
 
@@ -40,8 +39,8 @@ public class PersonaDetalles extends Activity {
     apellidos = (TextView) findViewById(R.id.apellidos);
     image = (restlight.widget.NetworkImageView) findViewById(R.id.image);
 
-    edit = (Button) findViewById(R.id.edit);
-    edit.setOnClickListener(new View.OnClickListener() {
+    btnEdit = (Button) findViewById(R.id.edit);
+    btnEdit.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent i = new Intent(getApplicationContext(), PersonaActivity.class);
@@ -51,8 +50,8 @@ public class PersonaDetalles extends Activity {
       }
     });
 
-    delete = (Button) findViewById(R.id.delete);
-    delete.setOnClickListener(new View.OnClickListener() {
+    btnDelete = (Button) findViewById(R.id.delete);
+    btnDelete.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         showDialogDelete();
@@ -66,8 +65,7 @@ public class PersonaDetalles extends Activity {
    *
    * @param savedInstanceState
    */
-  @Override
-  protected void onPostCreate(Bundle savedInstanceState) {
+  @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
 
     id = getIntent().getLongExtra("id", 0);
@@ -104,11 +102,11 @@ public class PersonaDetalles extends Activity {
             .setIcon(android.R.drawable.ic_delete)
             .setMessage("¡Desea eliminar este registro?")
             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int id) {
-        delete();
-      }
-    })
+            	@Override
+            	public void onClick(DialogInterface dialog, int id) {
+            		delete();
+            	}
+            })
             .setNegativeButton(android.R.string.cancel, null)
             .create()
             .show();
@@ -119,11 +117,11 @@ public class PersonaDetalles extends Activity {
    */
   private void delete() {
     PersonaDao dao = PersonaDao.getInstance();
-    Call<ServerResponse> call = dao.delete(id);
+    Call<Response> call = dao.delete(id);
 
-    call.execute(new Callback<ServerResponse>() {
+    call.execute(new Callback<Response>() {
       @Override
-      public void onResponse(ServerResponse result) throws Exception {
+      public void onResponse(Response result) throws Exception {
         if (result.success) {
           Toast.makeText(getApplicationContext(), "¡Ok Datos Borrados!", Toast.LENGTH_SHORT).show();
           setResult(RESULT_OK);
