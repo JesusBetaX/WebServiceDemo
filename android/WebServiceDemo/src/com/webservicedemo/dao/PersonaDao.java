@@ -129,7 +129,7 @@ public class PersonaDao {
    */
   private <T> Call<T> newCall(Request request, Class<T> classOf) {
     // [Opcional] Cancela todas la request que tengan esta TAG
-    service.restlight().getQueue().cancelAll(TAG);
+    service.restlight().cancelAll(TAG);
     request.setTag(TAG);
     
     // Crea un convertidor tipo GSON para la petición.

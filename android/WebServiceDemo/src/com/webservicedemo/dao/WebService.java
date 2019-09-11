@@ -41,7 +41,7 @@ public class WebService {
   private WebService() {
     restlight = Restlight.get();
     LruImageCache imageCache = new LruImageCache();
-    imageLoader = new ImageLoader(restlight.getQueue(), imageCache);
+    imageLoader = new ImageLoader(restlight, imageCache);
   }
   
 //TODO: Funciones
