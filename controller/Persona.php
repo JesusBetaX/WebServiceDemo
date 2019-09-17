@@ -38,8 +38,9 @@ class Persona {
     $cursor = $db->cursor('select * from persona where id = ?');
     $cursor->execute([ $request->id ]);
 
-    // Muestra el json.
-    return ['persona' => $cursor->fetchOne()];
+    $record = $cursor->fetchOne();
+      // Muestra el json.
+    return $this->response(true, $record ?$record :null, 'modelo persona');
   }
 
   /**
@@ -60,15 +61,22 @@ class Persona {
       	$request->apellidos
     ]);
 */
+
+/*
+    $json = json_decode($request->rawPostData());
+    $id = $db->insert('persona', $json);
+    $success = $id > 0;
+*/
+
     $id = $db->insert('persona', [
-    	'nombre'    => $request->nombre,
+      'nombre'    => $request->nombre,
       'apellidos' => $request->apellidos
     ]);
 
     $success = $id > 0;
 
     // Muestra el json.
-    return ['success' => $success];
+    return $this->response($success, $id);
   }
 
   /**
@@ -92,15 +100,22 @@ class Persona {
       	$request->id
     ]);
 */
+
+/*
+    $json = json_decode($request->rawPostData());
+    $rows = $db->update('persona', $json, 'id = ' . $json->id);
+    $success = $rows > 0;
+*/
+
     $rows = $db->update('persona', [
-    	'nombre'    => $request->nombre,
+      'nombre'    => $request->nombre,
       'apellidos' => $request->apellidos
-    ], 'id = ' . $request->id);
+    ],'id = ' . $request->id);
     
     $success = $rows > 0;
 
     // Muestra el json.
-    return ['success' => $success];
+    return $this->response($success, $rows);
   }
 
   /**
@@ -118,7 +133,15 @@ class Persona {
     $success = $rows > 0;
     
     // Muestra el json.
-    return ['success' => $success];
+    return $this->response($success, $rows);
   }
 
+
+  public function response($success, $result = NULL, $message = NULL) {
+    return [
+      'success' => $success,
+      'result' => $result,
+      'message' => $message
+    ];
+  }
 }

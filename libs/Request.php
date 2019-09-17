@@ -79,6 +79,20 @@ final class Request {
   public function size() {
     return count($_REQUEST);
   }
+
+  public function rawPostData() {
+    return isset($HTTP_RAW_POST_DATA) ?$HTTP_RAW_POST_DATA :NULL;
+  }
+
+  public function mapOf(array $keys, $defValue = NULL) {
+    $result = array();
+    foreach ($keys as $key) {
+      $result[$key] = array_key_exists($key, $_REQUEST) 
+          ? $_REQUEST[$key] 
+          : $defValue;
+    }
+    return $result;
+  }
   
   /**
    * Regresa verdadero si un archivo adicional es asociado con su nombre a la request.
