@@ -1,5 +1,6 @@
 
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import restlight.Call;
 import restlight.FormBody;
 import restlight.HttpUrl;
@@ -50,7 +51,7 @@ public class Persona
       request.setUrl(new HttpUrl("http://127.0.0.1/WebServiceDemo/persona/find")
               .addQueryParameter("id", id) // ?id={id}
       );
-      return WebService.newCallResult(request, Persona.class);
+      return WebService.newCall(request, new TypeToken< Result<Persona> >(){});
     }
 
     /**
@@ -69,7 +70,7 @@ public class Persona
               .add("nombre", nombre)
               .add("apellidos", apellidos));
 
-      return WebService.newCallResult(request, Integer.class);
+      return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
 
     /**
@@ -89,7 +90,7 @@ public class Persona
               .add("nombre", nombre)
               .add("apellidos", apellidos));
 
-      return WebService.newCallResult(request, Integer.class);
+      return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
 
     /**
@@ -104,7 +105,7 @@ public class Persona
       request.setUrl(new HttpUrl("http://127.0.0.1/WebServiceDemo/persona/delete")
               .addQueryParameter("id", id) // ?id={id}
       );
-      return WebService.newCallResult(request, Integer.class);
+      return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
 
     
