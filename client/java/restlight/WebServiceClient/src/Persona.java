@@ -24,7 +24,6 @@ public class Persona
 
   public static class Dao 
   {
-    
     /**
      * Obtiene todo los registros.
      *

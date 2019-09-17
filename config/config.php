@@ -10,7 +10,7 @@ return [
     'db' => [
         'dsn' => 'mysql:host=127.0.0.1;dbname=WebServiceDemoDB;charset=utf8',
         'username' => 'root',
-        'password' => ''
+        'password' => 'abc1234'
     ],
     /**
      * Configuración para la paguina.

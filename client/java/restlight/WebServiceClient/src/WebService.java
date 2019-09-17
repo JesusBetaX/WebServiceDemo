@@ -29,7 +29,7 @@ public class WebService {
   }
   
   public static <V> Call<V> newCall(Request request, TypeToken<V> token) {
-     WebService api = getInstance();
+    WebService api = getInstance();
     GsonRequest<V> parse = GsonRequest.of(api.gson, token);
     return api.restlight.newCall(request, parse);
   }
