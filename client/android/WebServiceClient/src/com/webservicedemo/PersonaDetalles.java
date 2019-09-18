@@ -14,9 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.webservicedemo.dao.PersonaDao;
-import com.webservicedemo.dao.WebService;
-import com.webservicedemo.model.Response;
+import com.webservicedemo.model.Persona;
+import com.webservicedemo.model.Result;
+import com.webservicedemo.model.WebService;
 
 public class PersonaDetalles extends Activity {
 
@@ -71,9 +71,9 @@ public class PersonaDetalles extends Activity {
     nombre.setText(getIntent().getStringExtra("nombre"));
     apellidos.setText(getIntent().getStringExtra("apellidos"));
 
-    PersonaDao dao = PersonaDao.getInstance();
+    Persona.Dao dao = new Persona.Dao();
     WebService service = WebService.getInstance();
-    image.setImageUrl(dao.getUrlFoto(), service.getImageLoader());
+    image.setImageUrl(dao.getUrlFoto(), service.imageLoader());
   }
 
   /**
@@ -115,12 +115,12 @@ public class PersonaDetalles extends Activity {
    * Elimina la nota.
    */
   private void delete() {
-    PersonaDao dao = PersonaDao.getInstance();
-    Call<Response> call = dao.delete(id);
+	  Persona.Dao dao = new Persona.Dao();
+    Call<Result<Integer>> call = dao.delete(id);
 
-    call.execute(new Callback<Response>() {
+    call.execute(new Callback<Result<Integer>>() {
       @Override
-      public void onResponse(Response result) throws Exception {
+      public void onResponse(Result<Integer> result) throws Exception {
         if (result.success) {
           Toast.makeText(getApplicationContext(), "¡Ok Datos Borrados!", Toast.LENGTH_SHORT).show();
           setResult(RESULT_OK);

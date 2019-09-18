@@ -15,8 +15,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.webservicedemo.R;
-import com.webservicedemo.dao.WebService;
 import com.webservicedemo.model.Persona;
+import com.webservicedemo.model.WebService;
 
 public class PersonaAdapter extends BaseAdapter {
   public static final String TAG = "PersonaAdapter";

@@ -1,43 +1,37 @@
-package com.webservicedemo.dao;
+package com.webservicedemo.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import restlight.Call;
 import restlight.Request;
-import restlight.ResponseBody;
 import restlight.Restlight;
+import restlight.request.GsonRequest;
 import restlight.widget.ImageLoader;
 import restlight.widget.LruImageCache;
 
 public class WebService {
-	// TODO: Variables
-
 	private static WebService instance;
 
-	/**
-	 * API para WebService.
-	 */
+	/** API para WebService. */
 	private final Restlight restlight;
 
-	/**
-	 * Centro de carga pra imagnes.
-	 */
+	/** Centro de carga pra imagnes.*/
 	private final ImageLoader imageLoader;
 
-	/**
-	 * Host de nuestro web service.
-	 */
+	/** Host de nuestro web service. */
 	private String host = "http://10.0.0.2/";
 
-	/**
-	 * Gson Serialized.
-	 */
-	private final Gson gson = new GsonBuilder().setDateFormat("M/d/yy hh:mm a")
-			.create();
+	/** Gson Serialized.*/
+	private final Gson gson;
 
-	// TODO: Contructor
-
+	
 	private WebService() {
+		gson = new GsonBuilder()
+			.serializeNulls()
+			.create();
+		
 		restlight = Restlight.get();
 		LruImageCache imageCache = new LruImageCache();
 		imageLoader = new ImageLoader(restlight, imageCache);
@@ -45,35 +39,34 @@ public class WebService {
 
 	// TODO: Funciones
 
-	public <T> Request.Parse<T> gsonRequest(final Class<T> classOf) {
-		return new Request.Parse<T>() {
-			@Override
-			public T parseResponse(ResponseBody response) throws Exception {
-				// Reader json = response.charStream(getCharset());
-				String json = response.string(getCharset());
-				return fromJson(json, classOf);
-			}
-		};
+	public static <V> Call<V> newCall(Request request, Class<V> classOf) {
+		WebService api = getInstance();
+	    GsonRequest<V> parse = GsonRequest.of(api.gson, classOf);
+	    return api.restlight.newCall(request, parse);
+	}
+	 
+	public static <V> Call<V> newCall(Request request, TypeToken<V> token) {
+	    WebService api = getInstance();
+	    GsonRequest<V> parse = GsonRequest.of(api.gson, token);
+	    return api.restlight.newCall(request, parse);
 	}
 
-	public WebService setHost(String host) {
+	public static String url(String link) {
+		return getInstance().getHost() + link;
+	}
+	
+	public void setHost(String host) {
 		this.host = host;
-		return this;
 	}
-
 	public String getHost() {
 		return host;
-	}
-
-	public String getUrl(String link) {
-		return getHost() + link;
 	}
 
 	public Restlight restlight() {
 		return restlight;
 	}
 
-	public ImageLoader getImageLoader() {
+	public ImageLoader imageLoader() {
 		return imageLoader;
 	}
 

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.webservicedemo.dao.PersonaDao;
 import com.webservicedemo.model.Persona;
 import com.webservicedemo.widget.PersonaAdapter;
 
@@ -57,7 +56,7 @@ public class PersonaList extends Activity implements
    * Metodo para refrescar el ListView.
    */
   private void refrescarLista() {
-    PersonaDao dao = PersonaDao.getInstance();
+    Persona.Dao dao = new Persona.Dao();
     Call<Persona[]> call = dao.getAll();
 
     call.execute(new Callback<Persona[]>() {

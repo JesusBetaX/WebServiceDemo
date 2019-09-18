@@ -9,8 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.webservicedemo.dao.PersonaDao;
-import com.webservicedemo.model.Response;
+import com.webservicedemo.model.Result;
 import com.webservicedemo.model.Persona;
 
 public class PersonaActivity extends Activity {
@@ -59,12 +58,12 @@ public class PersonaActivity extends Activity {
     obj.nombre = nombre.getText().toString();
     obj.apellidos = apellidos.getText().toString();
 
-    PersonaDao dao = PersonaDao.getInstance();
-    Call<Response> call = dao.save(obj);
+    Persona.Dao dao = new Persona.Dao();
+    Call<Result<Integer>> call = dao.save(obj);
 
-    call.execute(new Callback<Response>() {
+    call.execute(new Callback<Result<Integer>>() {
       @Override
-      public void onResponse(Response result) throws Exception {
+      public void onResponse(Result<Integer> result) throws Exception {
         if (result.success) {
           Toast.makeText(getApplicationContext(), "¡Ok Datos Guardados!",
                   Toast.LENGTH_SHORT).show();
