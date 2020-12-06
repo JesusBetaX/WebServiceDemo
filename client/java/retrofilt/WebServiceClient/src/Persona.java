@@ -30,35 +30,40 @@ public class Persona
   {
     @Headers("Token: " + WebService.TOKEN)
     @GET("persona/index")
-    Call<List<Persona>> get();
+    Call<List<Persona>> all();
     
     @Headers("Token: " + WebService.TOKEN)
     @GET("persona/index")
     Call<List<Persona>> search(
-            @Query("search") String search);
+            @Query("search") String search
+    );
 
     @Headers("Token: " + WebService.TOKEN)
     @GET("persona/find")
     Call<Result<Persona>> findById(
-            @Query("id") long id);
+            @Query("id") long id
+    );
 
     @Headers("Token: " + WebService.TOKEN)
     @FormUrlEncoded
     @POST("persona/insert")
     Call<Result<Integer>> insert(
             @Field("nombre") String nombre,
-            @Field("apellidos") String apellidos);
+            @Field("apellidos") String apellidos
+    );
 
     @Headers("Token: " + WebService.TOKEN)
     @FormUrlEncoded
     @POST("persona/update")
     Call<Result<Integer>> update(
             @Field("nombre") String nombre,
-            @Field("apellidos") String apellidos);
+            @Field("apellidos") String apellidos
+    );
 
     @Headers("Token: " + WebService.TOKEN)
     @DELETE("persona/delete")
     Call<Result<Integer>> delete(
-            @Query("id") long id);
+            @Query("id") long id
+    );
   }
 }
