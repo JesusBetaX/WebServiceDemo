@@ -39,8 +39,8 @@ public final class WebService {
         @Override
         public Object parseResponse(ResponseBody response) throws Exception {
             if (response.code != 200) 
-                throw new IOException("Response code " + response.code 
-                        + ", " + response.string(getCharset()));
+                throw new IOException("Response code " + response.code + ", " 
+                        + response.string(getCharset()));
             
             return super.parseResponse(response);
         }
