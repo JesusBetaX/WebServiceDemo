@@ -3,7 +3,6 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import restlight.Call;
 import restlight.FormBody;
-import restlight.HttpUrl;
 import restlight.Request;
 
 public class Persona 
@@ -30,11 +29,12 @@ public class Persona
      * @return Call
      */
     public Call<Persona[]> search(String search) {
+      FormBody body = new FormBody()
+            .add("search", search); // ?search={search}
+      
       Request request = new Request();
-      request.setMethod("GET");
-      request.setUrl(new HttpUrl("http://127.0.0.1/WebServiceDemo/persona/index")
-              .addQueryParameter("search", search) // ?search={search}
-      );
+      request.get("http://127.0.0.1/WebServiceDemo/persona/index", body);
+      
       return WebService.newCall(request, Persona[].class);
     }
 
@@ -45,11 +45,12 @@ public class Persona
      * @return Call
      */
     public Call<Result<Persona>> findById(long id) {
+      FormBody body = new FormBody()
+            .add("id", id); // ?id={id}
+        
       Request request = new Request();
-      request.setMethod("GET");
-      request.setUrl(new HttpUrl("http://127.0.0.1/WebServiceDemo/persona/find")
-              .addQueryParameter("id", id) // ?id={id}
-      );
+      request.get("http://127.0.0.1/WebServiceDemo/persona/find", body);
+      
       return WebService.newCall(request, new TypeToken< Result<Persona> >(){});
     }
 
@@ -61,13 +62,12 @@ public class Persona
      * @return Call
      */
     public Call<Result<Integer>> insert(String nombre, String apellidos) {
+      FormBody body = new FormBody()
+            .add("nombre", nombre)
+            .add("apellidos", apellidos);
+        
       Request request = new Request();
-      request.setMethod("POST");
-      request.setUrl("http://127.0.0.1/WebServiceDemo/persona/insert");
-
-      request.setBody(new FormBody()
-              .add("nombre", nombre)
-              .add("apellidos", apellidos));
+      request.post("http://127.0.0.1/WebServiceDemo/persona/insert", body);
 
       return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
@@ -80,14 +80,13 @@ public class Persona
      * @return Call
      */
     public Call<Result<Integer>> update(int id, String nombre, String apellidos) {
+      FormBody body = new FormBody()
+            .add("id", id)
+            .add("nombre", nombre)
+            .add("apellidos", apellidos);
+        
       Request request = new Request();
-      request.setMethod("POST");
-      request.setUrl("http://127.0.0.1/WebServiceDemo/persona/update");
-
-      request.setBody(new FormBody()
-              .add("id", id)
-              .add("nombre", nombre)
-              .add("apellidos", apellidos));
+      request.put("http://127.0.0.1/WebServiceDemo/persona/update", body);
 
       return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
@@ -99,11 +98,12 @@ public class Persona
      * @return Call
      */
     public Call<Result<Integer>> delete(long id) {
-      Request request = new Request();
-      request.setMethod("DELETE");
-      request.setUrl(new HttpUrl("http://127.0.0.1/WebServiceDemo/persona/delete")
-              .addQueryParameter("id", id) // ?id={id}
-      );
+      FormBody body = new FormBody()
+            .add("id", id); // ?id={id}
+      
+      Request request = new Request(); 
+      request.delete("http://127.0.0.1/WebServiceDemo/persona/delete", body);
+      
       return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
 
