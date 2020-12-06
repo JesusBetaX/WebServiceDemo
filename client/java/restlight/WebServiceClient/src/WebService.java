@@ -1,43 +1,49 @@
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
 import restlight.Call;
 import restlight.HttpUrlStack;
 import restlight.Request;
+import restlight.ResponseBody;
 import restlight.Restlight;
 import restlight.request.GsonRequest;
 
-public class WebService {
-  private static WebService instance;
+public final class WebService {
   
-  private Gson gson;
-  private Restlight restlight;
-  
-  private WebService() {
-    gson = new GsonBuilder()
+  private static Gson gson = new GsonBuilder()
             .serializeNulls()
             .create();
-    
-    restlight = new Restlight(new HttpUrlStack(), 1);
+  
+  private static Restlight restlight = new Restlight(
+          new HttpUrlStack(), 1);
+
+  private WebService() {
   }
 
   public static <V> Call<V> newCall(Request request, Class<V> classOf) {
-    WebService api = getInstance();
-    GsonRequest<V> parse = GsonRequest.of(api.gson, classOf);
-    return api.restlight.newCall(request, parse);
+    return restlight.newCall(request, 
+            newParseRequest(gson.getAdapter(classOf)));
   }
   
-  public static <V> Call<V> newCall(Request request, TypeToken<V> token) {
-    WebService api = getInstance();
-    GsonRequest<V> parse = GsonRequest.of(api.gson, token);
-    return api.restlight.newCall(request, parse);
+  public static <V> Call<V> newCall(Request request, TypeToken<V> type) {
+    return restlight.newCall(request, 
+            newParseRequest(gson.getAdapter(type)));
   }
-
-  public static WebService getInstance() {
-    if (instance == null) {
-      instance = new WebService();
-    }
-    return instance;
+  
+  public static <V> GsonRequest<V> newParseRequest(TypeAdapter<V> adapter) {
+    return new GsonRequest(gson, adapter) {
+        
+        @Override
+        public Object parseResponse(ResponseBody response) throws Exception {
+            if (response.code != 200) 
+                throw new IOException("Response code " + response.code 
+                        + ", " + response.string(getCharset()));
+            
+            return super.parseResponse(response);
+        }
+    };
   }
 }

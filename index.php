@@ -14,6 +14,7 @@ mb_internal_encoding('UTF-8');
  * @param int $line
  */
 function handleError($severity, $message, $filepath, $line) {
+  http_response_code(500);
   require 'view/error/error.php'; exit(1);
 }
 set_error_handler('handleError');
@@ -23,7 +24,8 @@ set_error_handler('handleError');
  * @param Exception $error
  */
 function handleException(Exception $error) {
-  require 'view/error/exception.php';
+  http_response_code( $error->getCode() );
+  require 'view/error/exception.php'; exit(1);
 }
 set_exception_handler('handleException');
 

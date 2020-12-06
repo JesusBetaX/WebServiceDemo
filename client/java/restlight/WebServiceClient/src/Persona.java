@@ -11,10 +11,9 @@ public class Persona
   public long id;
   
   @SerializedName("nombre")
-  
   public String nombre;
-  @SerializedName("apellidos")
   
+  @SerializedName("apellidos")
   public String apellidos;
 
   @Override public String toString() {
