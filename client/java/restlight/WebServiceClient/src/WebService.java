@@ -11,14 +11,14 @@ import restlight.ResponseBody;
 import restlight.Restlight;
 import restlight.request.GsonRequest;
 
-public final class WebService {
+public final class WebService extends HttpUrlStack {
   
   private static Gson gson = new GsonBuilder()
             .serializeNulls()
             .create();
   
   private static Restlight restlight = new Restlight(
-          new HttpUrlStack(), 1);
+          new WebService(), 1);
 
   private WebService() {
   }

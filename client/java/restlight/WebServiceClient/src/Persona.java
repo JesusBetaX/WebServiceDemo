@@ -31,8 +31,8 @@ public class Persona
       FormBody body = new FormBody()
             .add("search", search); // ?search={search}
       
-      Request request = new Request();
-      request.get("http://127.0.0.1/WebServiceDemo/persona/index", body);
+      Request request = new Request(
+              "GET", "http://127.0.0.1/WebServiceDemo/persona/index", body);
       
       return WebService.newCall(request, Persona[].class);
     }
@@ -47,8 +47,8 @@ public class Persona
       FormBody body = new FormBody()
             .add("id", id); // ?id={id}
         
-      Request request = new Request();
-      request.get("http://127.0.0.1/WebServiceDemo/persona/find", body);
+      Request request = new Request(
+              "GET", "http://127.0.0.1/WebServiceDemo/persona/find", body);
       
       return WebService.newCall(request, new TypeToken< Result<Persona> >(){});
     }
@@ -65,8 +65,8 @@ public class Persona
             .add("nombre", nombre)
             .add("apellidos", apellidos);
         
-      Request request = new Request();
-      request.post("http://127.0.0.1/WebServiceDemo/persona/insert", body);
+      Request request = new Request(
+              "POST", "http://127.0.0.1/WebServiceDemo/persona/insert", body);
 
       return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
@@ -84,8 +84,8 @@ public class Persona
             .add("nombre", nombre)
             .add("apellidos", apellidos);
         
-      Request request = new Request();
-      request.put("http://127.0.0.1/WebServiceDemo/persona/update", body);
+      Request request = new Request(
+              "PUT", "http://127.0.0.1/WebServiceDemo/persona/update", body);
 
       return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
@@ -100,8 +100,8 @@ public class Persona
       FormBody body = new FormBody()
             .add("id", id); // ?id={id}
       
-      Request request = new Request(); 
-      request.delete("http://127.0.0.1/WebServiceDemo/persona/delete", body);
+      Request request = new Request(
+              "DELETE", "http://127.0.0.1/WebServiceDemo/persona/delete", body);
       
       return WebService.newCall(request, new TypeToken< Result<Integer> >(){});
     }
